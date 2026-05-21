@@ -1,5 +1,7 @@
+// AdvancedWebCrawler.ts
 import fetch from "node-fetch";
 
+// AdvancedWebCrawler.ts
 export class AdvancedWebCrawler {
   private visited = new Set<string>();
   private maxDepth: number;

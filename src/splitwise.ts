@@ -41,3 +41,10 @@ export class Splitwise {
     }
   }
 }
+
+// ---------- Demo ----------
+const sw = new Splitwise();
+sw.addExpense("Alice", ["Alice", "Bob", "Charlie"], 120); // Alice paid 120 for 3
+sw.addExpense("Bob", ["Bob", "Charlie"], 60); // Bob paid 60 for 2
+sw.simplifyDebts();
+sw.showBalances();
