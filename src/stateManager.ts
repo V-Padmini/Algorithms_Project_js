@@ -1,40 +1,56 @@
-export type Listener = () => void;
-export type Middleware<T> = (state: T, next: (state: T) => void) => void;
+// TodoStore.ts
+export type Todo = {
+  id: number;
+  task: string;
+  done: boolean;
+};
 
-export class Store<T extends Record<string, any>> {
-  private state: T;
-  private listeners: Listener[] = [];
-  private middlewares: Middleware<T>[] = [];
+export class TodoStore {
+  private todos: Todo[] = [];
+  private listeners: (() => void)[] = [];
 
-  constructor(initialState: T) {
-    this.state = initialState;
-  }
-
-  getState(): T {
-    return JSON.parse(JSON.stringify(this.state));
-  }
-
-  setState(updater: Partial<T>) {
-    const newState = { ...this.state, ...updater };
-
-    const applyMiddleware = (state: T, index = 0) => {
-      if (index < this.middlewares.length) {
-        this.middlewares[index](state, (nextState) => applyMiddleware(nextState, index + 1));
-      } else {
-        this.state = state;
-        this.notify();
-      }
-    };
-
-    applyMiddleware(newState);
-  }
-
-  subscribe(listener: Listener): () => void {
+  // Subscribe a listener
+  subscribe(listener: () => void): () => void {
     this.listeners.push(listener);
-    return () => { this.listeners = this.listeners.filter(l => l !== listener); };
+    return () => {
+      this.listeners = this.listeners.filter(l => l !== listener);
+    };
   }
 
-  use(middleware: Middleware<T>) { this.middlewares.push(middleware); }
+  // Notify listeners
+  private notify() {
+    this.listeners.forEach(l => l());
+  }
 
-  private notify() { this.listeners.forEach(l => l()); }
+  // Get number of listeners
+  getListenerCount(): number {
+    return this.listeners.length;
+  }
+
+  // Add a todo
+  addTask(task: string) {
+    const todo: Todo = { id: Date.now(), task, done: false };
+    this.todos.push(todo);
+    this.notify();
+  }
+
+  // Complete a todo
+  completeTask(id: number) {
+    const todo = this.todos.find(t => t.id === id);
+    if (todo) {
+      todo.done = true;
+      this.notify();
+    }
+  }
+
+  // Remove a todo
+  removeTask(id: number) {
+    this.todos = this.todos.filter(t => t.id !== id);
+    this.notify();
+  }
+
+  // Get current todos
+  getTodos() {
+    return [...this.todos];
+  }
 }

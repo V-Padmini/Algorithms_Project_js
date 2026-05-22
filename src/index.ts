@@ -7,7 +7,7 @@ import { Vehicle, VehicleType, ParkingLot } from "./parkingLot";
 import { Splitwise } from "./splitwise";
 import { RateLimiter } from "./rateLimiter";
 import { TaskScheduler } from "./taskScheduler";
-import { Store } from "./stateManager";
+import { TodoStore } from "./stateManager";
 import { AdvancedWebCrawler } from "./webCrawler";
 import { WordSearch } from "./wordSearch";
 
@@ -15,26 +15,26 @@ import { WordSearch } from "./wordSearch";
 
 // Sudoku
 
-// const board: string[][] = [
-//   ["5","3",".",".","7",".",".",".","."],
-//   ["6",".",".","1","9","5",".",".","."],
-//   [".","9","8",".",".",".",".","6","."],
-//   ["8",".",".",".","6",".",".",".","3"],
-//   ["4",".",".","8",".","3",".",".","1"],
-//   ["7",".",".",".","2",".",".",".","6"],
-//   [".","6",".",".",".",".","2","8","."],
-//   [".",".",".","4","1","9",".",".","5"],
-//   [".",".",".",".","8",".",".","7","9"]
-// ];
+const board: string[][] = [
+  ["5","3",".",".","7",".",".",".","."],
+  ["6",".",".","1","9","5",".",".","."],
+  [".","9","8",".",".",".",".","6","."],
+  ["8",".",".",".","6",".",".",".","3"],
+  ["4",".",".","8",".","3",".",".","1"],
+  ["7",".",".",".","2",".",".",".","6"],
+  [".","6",".",".",".",".","2","8","."],
+  [".",".",".","4","1","9",".",".","5"],
+  [".",".",".",".","8",".",".","7","9"]
+];
 
-// const solver = new SudokuSolver(board);
+const solver = new SudokuSolver(board);
 
-// if (solver.solve()) {
-//   console.log("Sudoku solved:");
-//   solver.printBoard();
-// } else {
-//   console.log("No solution exists.");
-// }
+if (solver.solve()) {
+  console.log("Sudoku solved:");
+  solver.printBoard();
+} else {
+  console.log("No solution exists.");
+}
 //<------------------------------------------------------------------------------------------------------->
 // Trie
 
@@ -107,23 +107,23 @@ import { WordSearch } from "./wordSearch";
 
 // // Parking Lot
 // ---------- Demo Runner ----------
-const lot = new ParkingLot(1, 4); // 1 floor, 4 spots
-const bike = new Vehicle("KA-01-BIKE1", VehicleType.BIKE);
-const car = new Vehicle("KA-01-CAR1", VehicleType.CAR);
-const truck = new Vehicle("KA-01-TRUCK1", VehicleType.TRUCK);
+// const lot = new ParkingLot(1, 4); // 1 floor, 4 spots
+// const bike = new Vehicle("KA-01-BIKE1", VehicleType.BIKE);
+// const car = new Vehicle("KA-01-CAR1", VehicleType.CAR);
+// const truck = new Vehicle("KA-01-TRUCK1", VehicleType.TRUCK);
 
-lot.displayAvailable(); // show all spots available
+// lot.displayAvailable(); // show all spots available
 
-lot.park(bike);  // park bike
-lot.park(car);   // park car
-lot.park(truck); // park truck
+// lot.park(bike);  // park bike
+// lot.park(car);   // park car
+// lot.park(truck); // park truck
 
-lot.displayAvailable(); // see remaining spots
+// lot.displayAvailable(); // see remaining spots
 
-lot.remove("KA-01-BIKE1"); // remove bike
-lot.displayAvailable();    // see updated spots
+// lot.remove("KA-01-BIKE1"); // remove bike
+// lot.displayAvailable();    // see updated spots
 
-lot.remove("NOTFOUND");    // try removing vehicle not in lot
+// lot.remove("NOTFOUND");    // try removing vehicle not in lot
 //<------------------------------------------------------------------------------------------------------------->
 
 // // Splitwise
@@ -194,45 +194,36 @@ lot.remove("NOTFOUND");    // try removing vehicle not in lot
 //<---------------------------------------------------------------------------------------------------------------->
 
 // // Store
-// type State = { count: number; message: string };
+// const store = new TodoStore();
 
-// // 1️⃣ Create the store with initial state
-// const store = new Store<State>({ count: 0, message: "Hello" });
+// // Check initial listeners
+// console.log("Listeners:", store.getListenerCount()); // 0
 
-// // 2️⃣ Subscribe listeners
+// // Subscribe first listener
 // const unsubscribe1 = store.subscribe(() => {
-//   console.log("Listener 1:", store.getState());
+//   console.log("Listener 1 sees todos:", store.getTodos());
 // });
-// store.subscribe(() => {
-//   console.log("Listener 2:", store.getState());
+// console.log("Listeners after adding listener 1:", store.getListenerCount()); // 1
+
+// // Subscribe second listener
+// const unsubscribe2 = store.subscribe(() => {
+//   console.log("Listener 2 sees todos:", store.getTodos());
 // });
+// console.log("Listeners after adding listener 2:", store.getListenerCount()); // 2
 
-// // 3️⃣ Add middleware
-// store.use((state, next) => {
-//   console.log("Middleware 1 before update:", state);
-//   next(state); // continue to next middleware or state update
-// });
+// // Add a todo
+// store.addTask("Learn TypeScript");
 
-// store.use((state, next) => {
-//   console.log("Middleware 2 before update:", state);
-//   // Example: modify state in middleware
-//   const newState = { ...state, message: state.message + "!" };
-//   next(newState);
-// });
+// // Complete first todo
+// const firstTodo = store.getTodos()[0];
+// store.completeTask(firstTodo.id);
 
-// // 4️⃣ Update state
-// console.log("---- First update ----");
-// store.setState({ count: 1 });
-
-// console.log("---- Second update ----");
-// store.setState({ count: 5 });
-
-// // 5️⃣ Unsubscribe the first listener
+// // Unsubscribe first listener
 // unsubscribe1();
+// console.log("Listeners after removing listener 1:", store.getListenerCount()); // 1
 
-// // 6️⃣ Update state again
-// console.log("---- Third update ----");
-// store.setState({ count: 10, message: "Updated" });
+// // Remove todo
+// store.removeTask(firstTodo.id);
 
 //<---------------------------------------------------------------------------------------------------->
 
@@ -248,18 +239,18 @@ lot.remove("NOTFOUND");    // try removing vehicle not in lot
 
 // Word search
 // ---------- Demo ----------
-const grid = [
-  ['C','A','T','F'],
-  ['B','G','E','S'],
-  ['I','T','A','E'],
-  ['S','O','N','G']
-];
+// const grid = [
+//   ['C','A','T','F'],
+//   ['B','G','E','S'],
+//   ['I','T','A','E'],
+//   ['S','O','N','G']
+// ];
 
-const ws = new WordSearch(grid);
+// const ws = new WordSearch(grid);
 
-const words = ["CAT", "SONG", "TEA", "BIT"];
-for (const word of words) {
-  const result = ws.search(word);
-  if (result) console.log(`${word} found at positions:`, result);
-  else console.log(`${word} not found`);
-}
+// const words = ["CAT", "SONG", "TEA", "BIT"];
+// for (const word of words) {
+//   const result = ws.search(word);
+//   if (result) console.log(`${word} found at positions:`, result);
+//   else console.log(`${word} not found`);
+// }
