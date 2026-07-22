@@ -10,31 +10,57 @@ import { TaskScheduler } from "./taskScheduler";
 import { TodoStore } from "./stateManager";
 import { AdvancedWebCrawler } from "./webCrawler";
 import { WordSearch } from "./wordSearch";
+// import { runBFS } from "./bfs";
+
+
+// runBFS();
+
+// import { runBFSShortestPath } from "./bfs-shortest-path";
+
+
+// runBFSShortestPath();
+
+// import { runDFS } from "./dfs";
+
+
+// runDFS();
+
+
+// import { runSmartSearch } from "./smartSearch";
+
+
+// runSmartSearch();
+
+import { runSlidingWindow } from "./slidingWindow";
+
+
+runSlidingWindow();
+
 
 // ✅ Example usage:
 
 // Sudoku
 
-const board: string[][] = [
-  ["5","3",".",".","7",".",".",".","."],
-  ["6",".",".","1","9","5",".",".","."],
-  [".","9","8",".",".",".",".","6","."],
-  ["8",".",".",".","6",".",".",".","3"],
-  ["4",".",".","8",".","3",".",".","1"],
-  ["7",".",".",".","2",".",".",".","6"],
-  [".","6",".",".",".",".","2","8","."],
-  [".",".",".","4","1","9",".",".","5"],
-  [".",".",".",".","8",".",".","7","9"]
-];
+// const board: string[][] = [
+//   ["5","3",".",".","7",".",".",".","."],
+//   ["6",".",".","1","9","5",".",".","."],
+//   [".","9","8",".",".",".",".","6","."],
+//   ["8",".",".",".","6",".",".",".","3"],
+//   ["4",".",".","8",".","3",".",".","1"],
+//   ["7",".",".",".","2",".",".",".","6"],
+//   [".","6",".",".",".",".","2","8","."],
+//   [".",".",".","4","1","9",".",".","5"],
+//   [".",".",".",".","8",".",".","7","9"]
+// ];
 
-const solver = new SudokuSolver(board);
+// const solver = new SudokuSolver(board);
 
-if (solver.solve()) {
-  console.log("Sudoku solved:");
-  solver.printBoard();
-} else {
-  console.log("No solution exists.");
-}
+// if (solver.solve()) {
+//   console.log("Sudoku solved:");
+//   solver.printBoard();
+// } else {
+//   console.log("No solution exists.");
+// }
 //<------------------------------------------------------------------------------------------------------->
 // Trie
 
